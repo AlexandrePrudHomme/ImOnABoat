@@ -77,8 +77,12 @@ SELECT sailors.sname, sailors.age
 	FROM SAILORS;
 
 /* 2. Find the distinct names and ages of all sailors */
-SELECT DISTINCT sailors.sname, sailors.age
-	FROM SAILORS;
+SELECT sailors.sname, sailors.age
+	FROM SAILORS
+	GROUP BY sailors.sid;
+/* Old */
+/* SELECT DISTINCT sailors.sname, sailors.age
+	FROM SAILORS; */
 
 /* 3. Find all sailors with a rating above 7. */
 SELECT sailors.sid, sailors.sname, sailors.rating, sailors.age
@@ -92,11 +96,18 @@ SELECT sailors.sname
 	WHERE reserves.bid = 103;
 
 /* 5. Find the names of sailors who have reserved a red boat */
-SELECT DISTINCT sailors.sname
+SELECT sailors.sname
 	FROM SAILORS
 	INNER JOIN RESERVES ON sailors.sid = reserves.sid
 	INNER JOIN BOATS ON reserves.bid = boats.bid
-	WHERE boats.color = 'red';
+	WHERE boats.color = 'red'
+	GROUP BY sailors.sid;
+/* Old */
+/* SELECT DISTINCT sailors.sname
+	FROM SAILORS
+	INNER JOIN RESERVES ON sailors.sid = reserves.sid
+	INNER JOIN BOATS ON reserves.bid = boats.bid
+	WHERE boats.color = 'red'; */
 
 /* 6. Find the colors of boats reserved by Lubber */
 SELECT DISTINCT boats.color
@@ -106,13 +117,30 @@ SELECT DISTINCT boats.color
 	WHERE sailors.sname = 'Lubber';
 
 /* 7. Find the names of sailors who have reserved at least one boat */
-/*
 SELECT sailors.sname
 	(SELECT COUNT(reserves.sid) AS count_reserves_id
 	FROM SAILORS
 	INNER JOIN RESERVES ON sailors.sid = reserves.sid
 	WHERE count_reserves_id >= 1);
-*/
+
+/* 8. Compute increments for the ratings of persons who have sailed two different
+boats on the same day */
+
+/* 9. Find the ages of sailors whose name begins and ends with B and has at least three
+characters */
+SELECT sailors.age
+	FROM sailors
+	WHERE (position('B' in sailors.sname) = 1) and (position ('b' in sailors.sname) = 3) and (char_length(sailors.sname) = 3);
+
+/* 10. Find the names of sailors who have reserved a red or a green boat. */
+SELECT sailors.sname
+	FROM sailors
+	INNER JOIN reserves ON sailors.sid = reserves.sid
+	INNER JOIN boats ON reserves.bid = boats.bid
+	WHERE (boats.color = 'red') or (boats.color = 'green')
+	GROUP BY sailors.sid;
+
+
 
 
 
