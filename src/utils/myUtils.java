@@ -25,14 +25,14 @@ public class myUtils
         BufferedWriter out = null;
 
         try {
-            FileWriter fstream = new FileWriter("out.txt", false); //true tells to append data.
+            FileWriter fstream = new FileWriter("out.sql", false); //true tells to append data.
             out = new BufferedWriter(fstream);
             List<String> allNames = Files.readAllLines(Paths.get("E:\\Users\\Julien\\NetBeansProjects\\Utils\\src\\utils\\male.txt"));
             List<Sailor> allSailors = new LinkedList<>(); 
             
             out.write("CREATE TABLE Sailors ("
                     + "sID INTEGER,"
-                    + " sname STRING,"
+                    + " sname VARCHAR(15),"
                     + " rating INTEGER,"
                     + " age REAL);");
             out.newLine();
@@ -43,9 +43,9 @@ public class myUtils
                 allSailors.add(mySailor);
                 out.write("INSERT INTO Sailors VALUES (" + 
                         String.valueOf(mySailor.getsID())+ 
-                        "," + mySailor.getName() + 
-                        "," + String.valueOf(mySailor.getRating()) + 
-                        "," + String.valueOf(mySailor.getAge()) + ");");
+                        ", \"" + mySailor.getName() + 
+                        "\", " + String.valueOf(mySailor.getRating()) + 
+                        ", " + String.valueOf(mySailor.getAge()) + ");");
                 out.newLine();
             }
             
@@ -57,8 +57,8 @@ public class myUtils
             
             out.write("CREATE TABLE Boats ("
                     + "bID INTEGER,"
-                    + " bName INTEGER,"
-                    + " color STRING);");
+                    + " bName VARCHAR(20),"
+                    + " color VARCHAR(15));");
             out.newLine();
             
             Boat myBoat = null;
@@ -67,8 +67,8 @@ public class myUtils
                 allBoats.add(myBoat);
                 out.write("INSERT INTO Boats VALUES ("
                     + String.valueOf(myBoat.getbID()) 
-                    + ", " + myBoat.getName()
-                    + ", " + myBoat.getColor() + ");");
+                    + ", \"" + myBoat.getName()
+                    + "\", \"" + myBoat.getColor() + "\");");
                 out.newLine();
             }
             
@@ -83,7 +83,7 @@ public class myUtils
                 int theSID = (new Random().nextInt(allSailors.size()) + 1);
                 int theBID = (new Random().nextInt(allBoats.size()) + 1);
                 Date theDate = randomDate();
-                out.write("INSERT INTO Reserves ("
+                out.write("INSERT INTO Reserves VALUES("
                         + String.valueOf(theSID) + 
                         ", " + String.valueOf(theBID) +
                         ", " + theDate.toString() + ");");
