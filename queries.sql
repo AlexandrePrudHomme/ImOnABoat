@@ -140,10 +140,74 @@ SELECT sailors.sname
 	WHERE (boats.color = 'red') or (boats.color = 'green')
 	GROUP BY sailors.sid;
 
+/* 11. Find the names of sailors who have reserved both a red and a green boat. */
+SELECT s1.sname
+FROM sailors s1, reserves r1, boats b1
+WHERE s1.sid = r1.sid AND r1.bid = b1.bid AND b1.color = 'red'
+INTERSECT
+SELECT s2.sname
+FROM sailors s2, reserves r2, boats b2
+WHERE s2.sid = r2.sid AND r2.bid = b2.bid AND b2.color = 'green'
+/* similar to https://cs.nyu.edu/courses/Fall12/CSCI-GA.2433-001/lecture5.pdf */
 
+/* 12. Find the sids of all sailors who have reserved red boats but not green boats. */
+SELECT s1.sid
+FROM sailors s1, reserves r1, boats b1
+WHERE s1.sid = r1.sid AND r1.bid = b1.bid AND b1.color = 'red'
+EXCEPT
+SELECT s2.sid
+FROM sailors s2, reserves r2, boats b2
+WHERE s2.sid = r2.sid AND r2.bid = b2.bid AND b2.color = 'green'
+/* similar to https://cs.nyu.edu/courses/Fall12/CSCI-GA.2433-001/lecture5.pdf */
 
+/* 13. Find all sids of sailors who have rating of 10 or reserved boat 104 */
+SELECT sailors.sid
+FROM sailors
+WHERE sailors.rating = 10
+UNION
+SELECT reserves.sid
+FROM reserves
+WHERE reserves.bid = 104
+/* */
 
+/* 14. Find the average age of all sailors. */
+SELECT AVG(sailors.age)
+FROM sailors
+/* similar to https://www.cs.ubc.ca/~laks/cpsc304/Basic-SQL-Tutorial-Sol.pdf */
 
+/* 15. Find the average age of sailors with a rating of 10 */
+SELECT AVG(sailors.age)
+FROM sailors
+WHERE sailors.rating = 10
+/* similar to https://www.cs.ubc.ca/~laks/cpsc304/Basic-SQL-Tutorial-Sol.pdf */
+
+/* 16. Find the name and age of the oldest sailor */
+SELECT sailors.sname, sailors.age
+FROM sailors
+WHERE sailors.age = (SELECT MAX(sailors.age)
+					FROM sailors)
+
+/* 17. Count the number of sailors */
+SELECT COUNT(sailors)
+FROM sailors
+
+/* 18. Count the number of different sailor names.*/
+SELECT COUNT(DISTINCT sailors.sname)
+FROM sailors
+
+/* 19. Find the age of the youngest sailor for each rating level.*/
+SELECT MIN(sailors.age)
+FROM sailors
+GROUP BY sailors.rating
+
+/* 20. Find the age of the youngest sailor who is eligible to vote (i.e., is at least 18 years
+old) for each rating level with at least two such sailors. */
+SELECT MIN(sailors.age)
+FROM sailors
+WHERE sailors.age >= 18
+GROUP BY sailors.rating
+HAVING COUNT(sailors) >= 2
+/* similar to https://cs.nyu.edu/courses/Fall12/CSCI-GA.2433-001/lecture6.pdf*/
 
 
 
