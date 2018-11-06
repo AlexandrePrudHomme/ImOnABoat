@@ -125,6 +125,12 @@ SELECT sailors.sname
 
 /* 8. Compute increments for the ratings of persons who have sailed two different
 boats on the same day */
+SELECT sailors.sname, sailors.rating + 1
+FROM sailors
+INNER JOIN reserves r1 ON sailors.sid = r1.sid
+INNER JOIN reserves r2 ON sailors.sid = r2.sid
+WHERE r1.day = r2.day AND r1.bid <> r2.bid
+
 
 /* 9. Find the ages of sailors whose name begins and ends with B and has at least three
 characters */
