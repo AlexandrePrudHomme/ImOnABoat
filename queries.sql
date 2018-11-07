@@ -118,10 +118,17 @@ SELECT DISTINCT boats.color
 
 /* 7. Find the names of sailors who have reserved at least one boat */
 SELECT sailors.sname
-	(SELECT COUNT(reserves.sid) AS count_reserves_id
+FROM sailors
+INNER JOIN reserves ON sailors.sid = reserves.sid
+GROUP BY sailors.sid
+/* just need to see if there is one reserve then that means there is at least one reserved boat, not going to assume a reserve with no boat*/
+/* OLD
+FROM sailors
+(SELECT COUNT(reserves.sid) AS count_reserves_id
 	FROM SAILORS
 	INNER JOIN RESERVES ON sailors.sid = reserves.sid
 	WHERE count_reserves_id >= 1);
+*/
 
 /* 8. Compute increments for the ratings of persons who have sailed two different
 boats on the same day */
