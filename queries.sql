@@ -201,7 +201,7 @@ WHERE sailors.age = (SELECT MAX(sailors.age)
 					FROM sailors)
 
 /* 17. Count the number of sailors */
-SELECT COUNT(sailors)
+SELECT COUNT(sailors.sid)
 FROM sailors
 
 /* 18. Count the number of different sailor names.*/
