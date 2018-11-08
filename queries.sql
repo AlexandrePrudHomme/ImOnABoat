@@ -150,7 +150,6 @@ SELECT sailors.sname
 	INNER JOIN reserves ON sailors.sid = reserves.sid
 	INNER JOIN boats ON reserves.bid = boats.bid
 	WHERE (boats.color = 'red') or (boats.color = 'green')
-	GROUP BY sailors.sid;
 
 /* 11. Find the names of sailors who have reserved both a red and a green boat. */
 SELECT s1.sname
