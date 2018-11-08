@@ -143,8 +143,7 @@ WHERE r1.day = r2.day AND r1.bid <> r2.bid
 characters */
 SELECT sailors.age
 	FROM sailors
-	WHERE (position('B' in sailors.sname) = 1) and (position ('b' in sailors.sname) = 3) and (char_length(sailors.sname) = 3);
-
+	WHERE sname LIKE 'B_%b';
 /* 10. Find the names of sailors who have reserved a red or a green boat. */
 SELECT sailors.sname
 	FROM sailors
