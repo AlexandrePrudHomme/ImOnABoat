@@ -101,7 +101,7 @@ SELECT sailors.sname
 	INNER JOIN RESERVES ON sailors.sid = reserves.sid
 	INNER JOIN BOATS ON reserves.bid = boats.bid
 	WHERE boats.color = 'red'
-	GROUP BY sailors.sid;
+	GROUP BY sailors.sname;
 /* Old */
 /* SELECT DISTINCT sailors.sname
 	FROM SAILORS
