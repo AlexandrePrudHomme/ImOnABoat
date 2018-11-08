@@ -21,6 +21,19 @@ CREATE TABLE RESERVES
 	PRIMARY KEY (sid, bid, day)
 );
 
+CREATE INDEX SidOfSailorsIndex ON sailors USING hash (sid);
+CREATE INDEX SidOfReservessIndex ON reserves USING hash (sid);
+CREATE INDEX BidOfReservesIndex ON reserves USING hash (bid);
+CREATE INDEX BidOfBoatsIndex ON Boats USING hash (bid);
+CREATE INDEX NameOfSailorsIndex On sailors USING hash (sname);
+
+CREATE INDEX ColorOfBoatsIndex ON boats USING btree (color);
+CREATE INDEX RatingOfSailorsIndex ON sailors USING btree (rating);
+
+/*Pour faire un cluster, il faut clusterer avec des tuples deja dans le tuple (il ne le fait au fur et a mesure) */
+CLUSTER boats USING ColorOfBoatsIndex;
+CLUSTER sailors USING RatingsOfSailorsIndex;
+
 INSERT INTO SAILORS
 	VALUES (22, 'Dustin', 7, 45.0);
 INSERT INTO SAILORS
@@ -28,7 +41,7 @@ INSERT INTO SAILORS
 INSERT INTO SAILORS
 	VALUES (31, 'Lubber', 8, 55.5);
 INSERT INTO SAILORS
-	VALUES (32, 'Andy', 8, 25.5;
+	VALUES (32, 'Andy', 8, 25.5);
 INSERT INTO SAILORS
 	VALUES (58, 'Rusty', 10, 35.0);
 INSERT INTO SAILORS
