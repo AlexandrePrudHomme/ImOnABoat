@@ -32,7 +32,7 @@ CREATE INDEX RatingOfSailorsIndex ON sailors USING btree (rating);
 
 /*Pour faire un cluster, il faut clusterer avec des tuples deja dans le tuple (il ne le fait au fur et a mesure) */
 CLUSTER boats USING ColorOfBoatsIndex;
-CLUSTER sailors USING RatingsOfSailorsIndex;
+CLUSTER sailors USING RatingOfSailorsIndex;
 
 INSERT INTO SAILORS
 	VALUES (22, 'Dustin', 7, 45.0);
@@ -41,7 +41,7 @@ INSERT INTO SAILORS
 INSERT INTO SAILORS
 	VALUES (31, 'Lubber', 8, 55.5);
 INSERT INTO SAILORS
-	VALUES (32, 'Andy', 8, 25.5);
+	VALUES (32, 'Andy', 8, 25.5;
 INSERT INTO SAILORS
 	VALUES (58, 'Rusty', 10, 35.0);
 INSERT INTO SAILORS
@@ -90,9 +90,10 @@ SELECT sailors.sname, sailors.age
 	FROM SAILORS;
 
 /* 2. Find the distinct names and ages of all sailors */
-SELECT sailors.sname, sailors.age
+/* need distinct not group by*/
+SELECT DISTINCT sailors.sname, sailors.age
 	FROM SAILORS
-	GROUP BY sailors.sid;
+	/*GROUP BY sailors.sid*/
 /* Old */
 /* SELECT DISTINCT sailors.sname, sailors.age
 	FROM SAILORS; */
@@ -110,11 +111,11 @@ SELECT sailors.sname
 
 /* 5. Find the names of sailors who have reserved a red boat */
 SELECT sailors.sname
-	FROM SAILORS
-	INNER JOIN RESERVES ON sailors.sid = reserves.sid
-	INNER JOIN BOATS ON reserves.bid = boats.bid
-	WHERE boats.color = 'Red'
-	GROUP BY sailors.sname;
+FROM SAILORS
+INNER JOIN RESERVES ON sailors.sid = reserves.sid
+INNER JOIN BOATS ON reserves.bid = boats.bid
+WHERE boats.color = 'red'
+GROUP BY sailors.sname
 /* Old */
 /* SELECT DISTINCT sailors.sname
 	FROM SAILORS
@@ -133,7 +134,7 @@ SELECT DISTINCT boats.color
 SELECT sailors.sname
 FROM sailors
 INNER JOIN reserves ON sailors.sid = reserves.sid
-GROUP BY sailors.sid
+GROUP BY sailors.sname
 /* just need to see if there is one reserve then that means there is at least one reserved boat, not going to assume a reserve with no boat*/
 /* OLD
 FROM sailors
@@ -144,7 +145,7 @@ FROM sailors
 */
 
 /* 8. Compute increments for the ratings of persons who have sailed two different
-boats on the same day */
+boats on the same day @@@@@@@@@@@*/
 SELECT sailors.sname, sailors.rating + 1
 FROM sailors
 INNER JOIN reserves r1 ON sailors.sid = r1.sid
@@ -156,7 +157,8 @@ WHERE r1.day = r2.day AND r1.bid <> r2.bid
 characters */
 SELECT sailors.age
 	FROM sailors
-	WHERE sname LIKE 'B_%b';
+	WHERE sailors.sname LIKE 'B_%B'
+
 /* 10. Find the names of sailors who have reserved a red or a green boat. */
 SELECT sailors.sname
 	FROM sailors
@@ -220,13 +222,13 @@ SELECT COUNT(DISTINCT sailors.sname)
 FROM sailors
 
 /* 19. Find the age of the youngest sailor for each rating level.*/
-SELECT MIN(sailors.age)
+SELECT MIN(sailors.age), sailors.rating
 FROM sailors
 GROUP BY sailors.rating
 
 /* 20. Find the age of the youngest sailor who is eligible to vote (i.e., is at least 18 years
 old) for each rating level with at least two such sailors. */
-SELECT MIN(sailors.age)
+SELECT MIN(sailors.age), sailors.rating
 FROM sailors
 WHERE sailors.age >= 18
 GROUP BY sailors.rating
