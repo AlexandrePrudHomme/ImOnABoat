@@ -22,13 +22,25 @@ CREATE TABLE RESERVES
 );
 
 CREATE INDEX SidOfSailorsIndex ON sailors USING hash (sid);
-CREATE INDEX SidOfReservessIndex ON reserves USING hash (sid);
+CREATE INDEX SidOfReservesIndex ON reserves USING hash (sid);
 CREATE INDEX BidOfReservesIndex ON reserves USING hash (bid);
-CREATE INDEX BidOfBoatsIndex ON Boats USING hash (bid);
+CREATE INDEX BidOfBoatsIndex ON boats USING hash (bid);
 CREATE INDEX NameOfSailorsIndex On sailors USING hash (sname);
+CREATE INDEX ColorOfBoatsIndex ON boats USING hash (color);
+CREATE INDEX RatingOfSailorsIndex ON sailors USING hash (rating);
 
 CREATE INDEX ColorOfBoatsIndex ON boats USING btree (color);
 CREATE INDEX RatingOfSailorsIndex ON sailors USING btree (rating);
+
+CREATE INDEX SnameOfSailorsIndex ON sailors USING btree (sname);
+CLUSTER sailors USING SnameOfSailorsIndex;
+
+CREATE INDEX AgeOfSailorsIndex ON sailors USING btree (age);
+CLUSTER sailors USING AgeOfSailorsIndex;
+
+CREATE INDEX SidOfSailorsIndexBtree ON sailors USING btree (sid);
+CLUSTER sailors USING SidOfSailorsIndexBtree;
+
 
 /*Pour faire un cluster, il faut clusterer avec des tuples deja dans le tuple (il ne le fait au fur et a mesure) */
 CLUSTER boats USING ColorOfBoatsIndex;
@@ -114,7 +126,7 @@ SELECT sailors.sname
 FROM SAILORS
 INNER JOIN RESERVES ON sailors.sid = reserves.sid
 INNER JOIN BOATS ON reserves.bid = boats.bid
-WHERE boats.color = 'red'
+WHERE boats.color = 'Red'
 GROUP BY sailors.sname
 /* Old */
 /* SELECT DISTINCT sailors.sname
@@ -157,33 +169,33 @@ WHERE r1.day = r2.day AND r1.bid <> r2.bid
 characters */
 SELECT sailors.age
 	FROM sailors
-	WHERE sailors.sname LIKE 'B_%B'
+	WHERE sailors.sname LIKE 'B_%b'
 
 /* 10. Find the names of sailors who have reserved a red or a green boat. */
 SELECT sailors.sname
 	FROM sailors
 	INNER JOIN reserves ON sailors.sid = reserves.sid
 	INNER JOIN boats ON reserves.bid = boats.bid
-	WHERE (boats.color = 'red') or (boats.color = 'green')
+	WHERE (boats.color = 'Red') or (boats.color = 'Green')
 
 /* 11. Find the names of sailors who have reserved both a red and a green boat. */
 SELECT s1.sname
 FROM sailors s1, reserves r1, boats b1
-WHERE s1.sid = r1.sid AND r1.bid = b1.bid AND b1.color = 'red'
+WHERE s1.sid = r1.sid AND r1.bid = b1.bid AND b1.color = 'Red'
 INTERSECT
 SELECT s2.sname
 FROM sailors s2, reserves r2, boats b2
-WHERE s2.sid = r2.sid AND r2.bid = b2.bid AND b2.color = 'green'
+WHERE s2.sid = r2.sid AND r2.bid = b2.bid AND b2.color = 'Rreen'
 /* similar to https://cs.nyu.edu/courses/Fall12/CSCI-GA.2433-001/lecture5.pdf */
 
 /* 12. Find the sids of all sailors who have reserved red boats but not green boats. */
 SELECT s1.sid
 FROM sailors s1, reserves r1, boats b1
-WHERE s1.sid = r1.sid AND r1.bid = b1.bid AND b1.color = 'red'
+WHERE s1.sid = r1.sid AND r1.bid = b1.bid AND b1.color = 'Red'
 EXCEPT
 SELECT s2.sid
 FROM sailors s2, reserves r2, boats b2
-WHERE s2.sid = r2.sid AND r2.bid = b2.bid AND b2.color = 'green'
+WHERE s2.sid = r2.sid AND r2.bid = b2.bid AND b2.color = 'Green'
 /* similar to https://cs.nyu.edu/courses/Fall12/CSCI-GA.2433-001/lecture5.pdf */
 
 /* 13. Find all sids of sailors who have rating of 10 or reserved boat 104 */
