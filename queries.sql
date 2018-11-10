@@ -127,7 +127,6 @@ FROM SAILORS
 INNER JOIN RESERVES ON sailors.sid = reserves.sid
 INNER JOIN BOATS ON reserves.bid = boats.bid
 WHERE boats.color = 'Red'
-GROUP BY sailors.sname
 /* Old */
 /* SELECT DISTINCT sailors.sname
 	FROM SAILORS
@@ -146,7 +145,6 @@ SELECT DISTINCT boats.color
 SELECT sailors.sname
 FROM sailors
 INNER JOIN reserves ON sailors.sid = reserves.sid
-GROUP BY sailors.sname
 /* just need to see if there is one reserve then that means there is at least one reserved boat, not going to assume a reserve with no boat*/
 /* OLD
 FROM sailors
