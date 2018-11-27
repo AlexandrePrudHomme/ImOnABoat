@@ -1,0 +1,17 @@
+DROP TABLE BOATS;
+
+CREATE TABLE BOATS
+(
+	bid INTEGER PRIMARY KEY,
+	bname VARCHAR,
+	color VARCHAR
+);
+
+INSERT INTO BOATS
+	VALUES (101, 'Interlake', 'blue');
+INSERT INTO BOATS
+	VALUES (102, 'Interlake', 'red');
+INSERT INTO BOATS
+	VALUES (103, 'Clipper', 'green');
+INSERT INTO BOATS
+	VALUES (104, 'Marine', 'red');
