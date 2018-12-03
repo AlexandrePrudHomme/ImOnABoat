@@ -16,6 +16,7 @@ class sailor:
         self.age = age
         
 try:
+    # Connection
     connection = psycopg2.connect(user = "postgres",
                                   password = "gotan123",
                                   host = "localhost",
@@ -29,41 +30,50 @@ try:
     record = cursor.fetchone()
     print("You are connected to - ", record,"\n")
     
+    #Cursor to fetch data from the database
     cursor =  connection.cursor()
     
+    #Get all sailors from the database
     get_sailors_query = "SELECT * FROM sailors;"
     
     cursor.execute(get_sailors_query)
     sailors = cursor.fetchall()
-    print(sailors)
+
+    
+    #Create a list of sailor object to facilitate the data usage
     listOfSailors = []
     
     for aSailor in sailors:
         listOfSailors.append(sailor(aSailor[0],aSailor[1], aSailor[2], aSailor[3]))
-        print(listOfSailors[-1].theID)
+
     
+    #Get the age of all sailors
     listOfAges = []
     for aSailor in listOfSailors:
         listOfAges.append(aSailor.age)
-        print(aSailor.age)
+
         
+    #Find the age variance
     ageVariance = numpy.var(listOfAges)
-    print(str(ageVariance) + "\n")
+    print("The age variance is: " + str(ageVariance) + "\n")
     
+    #Find the age standard deviation
     ageStanDev = numpy.std(listOfAges)
-    print(str(ageStanDev) + "\n")
+    print("The age standard deviation is: " + str(ageStanDev) + "\n")
     
+    #Find the average age of sailors
     ageAvr = numpy.average(listOfAges)
-    print(str(ageAvr) + "\n")
+    print("The averag age is: " + str(ageAvr) + "\n")
     
+    #Find all the sailors in one standard variation from the average
     listOfSailorsInSD = []
-    
     upperBound = ageAvr + ageStanDev
     lowerBound = ageAvr - ageStanDev
+    print("This is a list of all the sailors with ages in one standard deviation of the average: ")
     for aSailor in listOfSailors:
         if (aSailor.age < upperBound) and (aSailor.age > lowerBound):
             listOfSailorsInSD.append(aSailor)
-            print(str(aSailor.age) + "\n")
+            print(str(aSailor.name) + ": " + str(aSailor.age))
     
     
     
@@ -76,4 +86,4 @@ finally:
         if(connection):
             cursor.close()
             connection.close()
-            print("PostgreSQL connection is closed")
+            print("\nPostgreSQL connection is closed")
